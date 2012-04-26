@@ -1,0 +1,96 @@
+<style>
+body {
+	min-width:250px;
+	overflow-x:hidden;
+	font:normal 16px/24px arial, sans-serif;
+	color:#444;
+}
+h1 {
+	font:normal 24px/36px arial, sans-serif;
+}
+[name="hex"] {
+	text-transform:uppercase;
+}
+label {
+	display:inline-block;
+	width:30px;
+}
+.num {
+	width:120px;
+}
+.btn {
+	background-color:#c0ddf2;
+	color:#4e4d4c;
+	border: 1px solid #c0ddf2;
+	border-radius:4px;
+	cursor: pointer;
+}
+.btn:hover {
+	background-color:#8cd7fe;
+}
+</style>
+<h1>Hex/Dec/Bin Converter</h1>
+<form id="calculator">
+	<p><label for="">bin</label> <input name="bin" id="binary" type="text" class="num"> <input class="btn" type="button" value="convert!" name="bin-button" data-for="binary"></p>
+	<p><label for="">dec</label> <input name="dec" id="decimal" type="text" class="num"> <input class="btn" type="button" value="convert!" name="dec-button" data-for="decimal"></p>
+	<p><label for="">hex</label> <input name="hex" id="hexadecimal" type="text" class="num"> <input class="btn" type="button" value="convert!" name="hex-button" data-for="hexadecimal"></p>
+	<p id="msg">Please enter a number to convert.</p>
+</form>
+<script>
+var btn = document.getElementsByClassName('btn'),
+	bin = document.getElementById('binary'),
+	dec = document.getElementById('decimal'),
+	hex = document.getElementById('hexadecimal');
+
+for(var i=0;i<btn.length;i += 1) {
+	btn[i].addEventListener('click',function () {
+		var f = this.getAttribute("data-for");
+		convert(f);
+	},false);
+}
+
+function convert(f) {
+	var x = document.getElementById(f).value;
+	if(x) {
+		message(x+' from '+f+'!');
+		convert[f](x);
+	}
+	else {
+		message('Please enter a number to convert.');
+	}
+}
+convert.binary = function(x) {
+	if(/^[01]{1,}$/.test(x)) {
+		dec.value = parseInt(x,2).toString(10);
+		hex.value = parseInt(x,2).toString(16);
+		message("converted "+x+" from binary.");
+	}
+	else {
+		message("That's not a valid binary value!");
+	}
+}
+convert.decimal = function(x) {
+	if(/^[0-9]{1,}$/.test(x)) {
+		bin.value = parseInt(x,10).toString(2);
+		hex.value = parseInt(x,10).toString(16);
+		message("converted "+x+" from decimal.");
+	}
+	else {
+		message("That's not a valid decimal value!");
+	}
+}
+convert.hexadecimal = function(x) {
+	if(/^[0-9a-f]{1,}$/gi.test(x)) {
+		bin.value = parseInt(x,16).toString(2);
+		dec.value = parseInt(x,16).toString(10);
+		message('converted <span class="hex">'+x+'</span> from hexadecimal.');
+	}
+	else {
+		message("That's not a valid hexadecimal value!");
+	}
+}
+function message(m) {
+	var msg = document.getElementById('msg');
+	msg.innerHTML = m;
+}
+</script>
